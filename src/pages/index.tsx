@@ -3,10 +3,10 @@ import { createUrqlClient } from '../utils/createUrqlClient';
 import { usePostsQuery } from '../generated/graphql';
 import { Layout } from '../components/Layout';
 import React, { useState } from 'react';
-import { Box, Button, Flex, Heading, IconButton, Link, Stack, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, Link, Stack, Text } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { UpdootSection } from '../components/UpdootSection';
-import { DeleteIcon } from '@chakra-ui/icons';
+import { EditDeletePostButtons } from '../components/EditDeletePostButtons';
 
 const Index = () => {
   const [variables, setVariables] = useState({
@@ -16,7 +16,6 @@ const Index = () => {
   const [{ data, fetching }] = usePostsQuery({
     variables
   })
-
   if (!fetching && !data) {
     return <div>you got query falied for some reason</div>
   }
@@ -40,12 +39,9 @@ const Index = () => {
                 <Text>Posted by {p.creator.username}</Text>
                 <Flex align="center">
                   <Text flex={1} mt={4}>{p.textSnippet}</Text>
-                  <IconButton
-                    aria-label="Delete Post"
-                    icon={<DeleteIcon />}
-                    onClick={() => console.log('saludos')}
-                    colorScheme="red"
-                  />
+                  <Box ml="auto">
+                    <EditDeletePostButtons id={p.id} creatorId={p.creator.id} />
+                  </Box>
                 </Flex>
               </Box>
             </Flex>
